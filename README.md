@@ -19,12 +19,6 @@ Structural Assistant is a mobile app for simplifying structural analysis calcula
 1. Start the app: `npm start`
 2. Open the app on your mobile device using the Expo app or in an emulator.
 
-## Screenshots
-
-![Screenshot 1](images/Screenshot1.png)
-//check 
-![Screenshot 2](screenshots/screenshot2.png)
-
 ## Contributing
 
 Contributions are welcome! If you find a bug or want to add a new feature, please follow these steps:
@@ -34,8 +28,3 @@ Contributions are welcome! If you find a bug or want to add a new feature, pleas
 3. Make your changes and commit them: `git commit -m 'Add new feature'`
 4. Push to the branch: `git push origin feature-name`
 5. Submit a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
