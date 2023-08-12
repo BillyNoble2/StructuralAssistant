@@ -21,7 +21,7 @@ Structural Assistant is a mobile app for simplifying structural analysis calcula
 
 ## Screenshots
 
-![Screenshot 1](/Users/billynoble/StrucAssistant/images/Screenshot1.png)
+![Screenshot 1](images/Screenshot1.png)
 //check 
 ![Screenshot 2](screenshots/screenshot2.png)
 
