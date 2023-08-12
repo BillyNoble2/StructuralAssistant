@@ -5,7 +5,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 const FAQ = () => {
   const [activeSections, setActiveSections] = useState([]);
 
-  // Sample data for questions and answers
+  // Data for questions and answers.
   const FAQData = [
     {
       question: 'What is StructuralAssistant?',
@@ -33,6 +33,7 @@ const FAQ = () => {
       },
   ];
 
+  // Function to render the header of each accordion section.
   const renderHeader = (section, _, isActive) => {
     return (
       <View style={[styles.header, isActive && styles.activeHeader]}>
@@ -47,6 +48,7 @@ const FAQ = () => {
     );
   };
 
+  // Function to render the content of each accordion section.
   const renderContent = (section) => {
     return (
       <View style={styles.content}>
@@ -55,6 +57,7 @@ const FAQ = () => {
     );
   };
 
+  // Function to update the active sections in the accordion.
   const updateSections = (activeSections) => {
     setActiveSections(activeSections);
   };
@@ -90,10 +93,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   activeHeader: {
+    // Color for the header when active.
     backgroundColor: 'darkblue',
   },
   activeHeaderText: {
-    color: 'white', // Color for the header text when active
+    // Color for the header text when active.
+    color: 'white', 
   },
   headerText: {
     fontSize: 16,

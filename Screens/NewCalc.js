@@ -3,17 +3,13 @@ import { View, Text, StyleSheet, ScrollView, Image, Dimensions, TouchableOpacity
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
-const ImageComponent = ({ source }) => {
-  const screenWidth = Dimensions.get('window').width;
-  return (
-    <Image source={source} style={[styles.image, { width: screenWidth * 0.8 }]} resizeMode="contain" />
-  );
-};
 
 const NewCalc = () => {
   const navigation = useNavigation();
 
+  // Get the route information.
   const route = useRoute();
+  // Extract the userId parameter from the route.
   const userID = route.params?.userId;
 
   const handleScenario1Press = () => {
@@ -28,20 +24,9 @@ const NewCalc = () => {
     navigation.navigate('Scenario3');
   };
 
-
-  const Header = () => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>StructuralAssistant</Text>
-      </View>
-    );
-  };
-
-
   return (
     <View style={styles.container}>
-        <Header />
-      <Text style={styles.text}>Please select the desired scenario</Text>
+      <Text style={styles.text}>Please select desired calculation scenario:</Text>
       <ScrollView contentContainerStyle={styles.containerSelection}>
         <TouchableOpacity onPress={handleScenario1Press}>
           <Image style={styles.image} source={require('/Users/billynoble/StrucAssistant/images/Scenario1.png')} />
@@ -80,23 +65,20 @@ const styles = StyleSheet.create({
     height: 190,
   },
   text: {
-    paddingTop: 15,
+    paddingTop: 0,
     paddingBottom: 15,
     paddingLeft: 10,
-    fontSize: 18,
+    fontSize: 20,
+    alignSelf: 'flex-start'
   },
   headerContainer: {
     marginTop: 0,
     alignItems:'center',
     paddingTop:30,
   },
-  title: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color:'darkblue',
-  },
+
   blankSection: {
-    height: 200, // Adjust the height as needed to block off the desired space
+    height: 150, 
     backgroundColor: 'white',
   },
 });

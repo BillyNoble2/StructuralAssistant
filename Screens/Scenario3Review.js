@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Keyboard, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 // Calculation of design point load.
 export function designLoad(deadLineLoad, liveLineLoad, deadLoadFactor, liveLoadFactor) {
@@ -37,17 +38,27 @@ export function calculateDeflection(deadLineLoad, liveLineLoad, youngsMod, beamI
 }
 
 
-const Scenario3 = () => {
+const Scenario3Review = () => {
   // State variables for user input.
-  const [deadLineLoad, setDeadLineLoad] = useState('');
-  const [liveLineLoad, setLiveLineLoad] = useState('');
-  const [deadLoadFactor, setDeadLoadFactor] = useState('');
-  const [liveLoadFactor, setLiveLoadFactor] = useState('');
-  const [youngsMod, setYoungsMod] = useState('');
-  const [beamInertia, setBeamInertia] = useState('');
-  const [beamSpan, setBeamSpan] = useState('');
+  const route = useRoute();
+  const calcId = route.params?.calcid;
+  const deadLL = route.params?.deadlineload;
+  const liveLL = route.params?.livelineload;
+  const dlFact = route.params?.deadloadfactor;
+  const llFact = route.params?.liveloadfactor;
+  const beamSp = route.params?.beamspan;
+  const ymod = route.params?.youngsmod;
+  const binertia = route.params?.beaminertia;
+  // State variables for user input, set to passed in calculation data.
+  const [deadLineLoad, setDeadLineLoad] = useState(deadLL)
+  const [liveLineLoad, setLiveLineLoad] = useState(liveLL);
+  const [deadLoadFactor, setDeadLoadFactor] = useState(dlFact);
+  const [liveLoadFactor, setLiveLoadFactor] = useState(llFact);
+  const [youngsMod, setYoungsMod] = useState(ymod);
+  const [beamInertia, setBeamInertia] = useState(binertia);
+  const [beamSpan, setBeamSpan] = useState(beamSp);
   const [calculationResult, setCalculationResult] = useState(null);
-  // Set initial values to null.
+
   const liveLineLoadRef = useRef(null);
   const deadLineLoadRef = useRef(null);
   const deadLoadFactorRef = useRef(null);
@@ -267,4 +278,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Scenario3;
+export default Scenario3Review;

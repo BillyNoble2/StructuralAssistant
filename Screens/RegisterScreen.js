@@ -1,17 +1,19 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { View, TextInput, Text, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native'
 import { auth, db } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 
 function RegisterScreen() {
+    // State variables for input fields.
     const [fName, setFName] = useState('')
     const [lName, setLName] = useState('')
     const [email, setEmail] = useState('')
     const [password1, setPassword] = useState('')
     const [password2, setPassword2] = useState('')
-
+    // Initialize useNavigation hook.
     const navigation = useNavigation()
 
+    // Function to handle user registration.
     const handleSignUp = () => {
         if (password1 === password2) {
           const password = password1;
@@ -20,11 +22,13 @@ function RegisterScreen() {
             .then(userCredentials => {
               const user = userCredentials.user;
               db.collection("users").add({
+                // Adding user data to the Firestore database.
                 firstName: fName,
                 lastName: lName,
                 emailAdd: email,
                 userId: user.uid,
               });
+              // Navigate to the Login screen after successful registration.
               navigation.replace("Login");
             })
             .catch(error => alert(error.message));
@@ -68,7 +72,6 @@ function RegisterScreen() {
                 style = {styles.input}
                 secureTextEntry
             />
-
             <TouchableOpacity onPress = {handleSignUp} style = {styles.button}>
                 <Text style = {styles.buttonText}>Register</Text>
             </TouchableOpacity>  

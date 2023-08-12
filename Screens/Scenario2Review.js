@@ -1,18 +1,43 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Keyboard, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 // Calculation of design point load.
 export function designLoad(deadPointLoad, livePointLoad, deadLoadFactor, liveLoadFactor) {
-  const designPointLoad = deadPointLoad * deadLoadFactor + livePointLoad * liveLoadFactor;
+  const designPointLoad = (deadPointLoad * deadLoadFactor) + (livePointLoad * liveLoadFactor);
   return designPointLoad;
 }
 
 // Calculation of unfactored support reactions.
-export function calculateSuppReactions(deadPointLoad, livePointLoad) {
-  const deadSuppReaction = deadPointLoad / 2;
-  const liveSuppReaction = livePointLoad / 2;
-  return [deadSuppReaction, liveSuppReaction];
+export function calculateSuppReactions(deadPointLoad, livePointLoad, beamDimA, beamDimB) {
+  const deadSuppReactionA = (deadPointLoad * beamDimB) / (beamDimA + beamDimB);
+  const liveSuppReactionA = (livePointLoad * beamDimB) / (beamDimA + beamDimB);
+  const deadSuppReactionB = (deadPointLoad * beamDimA) / (beamDimA + beamDimB);
+  const liveSuppReactionB = (livePointLoad * beamDimA) / (beamDimA + beamDimB);
+  return [deadSuppReactionA, liveSuppReactionA, deadSuppReactionB, liveSuppReactionB];
+}
+
+// Calculation of design bending moment.
+export function calculateBendMom(designPointLoad, beamDimA, beamDimB) {
+  const designMom = ((designPointLoad * beamDimA * beamDimB) / (beamDimA + beamDimB))
+  return designMom;
+}
+
+// Calculation of dead and live deflection.
+export function calculateDeflection(deadPointLoad, livePointLoad, youngsMod, beamInertia, beamDimA, beamDimB) {
+  const dimx = Math.sqrt(((beamDimA) * ((beamDimA + beamDimB) + beamDimB)) / 3);
+  const rawdeadDeflection =
+    ((deadPointLoad * (beamDimA * 1000) * (beamDimB * 1000)) * ((beamDimA + beamDimB) * 1000 + beamDimB * 1000)) /
+    (27 * youngsMod * (beamInertia * 10000) * (beamDimA + beamDimB) * 1000) *
+    Math.sqrt(3 * (beamDimA * 1000) * ((beamDimA + beamDimB) + beamDimB) * 1000);
+  const rawliveDeflection =
+    ((livePointLoad * (beamDimA * 1000) * (beamDimB * 1000)) * ((beamDimA + beamDimB) * 1000 + beamDimB * 1000)) /
+    (27 * youngsMod * (beamInertia * 10000) * (beamDimA + beamDimB) * 1000) *
+    Math.sqrt(3 * (beamDimA * 1000) * ((beamDimA + beamDimB) + beamDimB) * 1000);
+  const deadDeflection = parseFloat(rawdeadDeflection.toFixed(1));
+  const liveDeflection = parseFloat(rawliveDeflection.toFixed(1));
+  return [deadDeflection, liveDeflection];
 }
 
 // Calculation of design shear.
@@ -21,41 +46,38 @@ export function calculateShear(designPointLoad) {
   return designShear;
 }
 
-// Calculation of design bending moment.
-export function calculateBendMom(designPointLoad, beamSpan) {
-  const designMom = (designPointLoad * beamSpan) / 4;
-  return designMom;
-}
 
-// Calculation of dead and live deflection.
-export function calculateDeflection(deadPointLoad, livePointLoad, youngsMod, beamInertia, beamSpan) {
-  const rawdeadDeflection = (deadPointLoad * Math.pow(beamSpan * 1000, 3)) / (48 * youngsMod * beamInertia * 10000);
-  const rawliveDeflection = (livePointLoad * Math.pow(beamSpan * 1000, 3)) / (48 * youngsMod * beamInertia * 10000);
-  const deadDeflection = parseFloat(rawdeadDeflection.toFixed(1));
-  const liveDeflection = parseFloat(rawliveDeflection.toFixed(1));
-  return [deadDeflection, liveDeflection];
-}
+const Scenario2Review = () => {
+  const route = useRoute();
+  // Extracting data from the route params.
+  const deadPL = route.params?.deadpointload;
+  const livePL = route.params?.livepointload;
+  const dlFact = route.params?.deadloadfactor;
+  const llFact = route.params?.liveloadfactor;
+  const ymod = route.params?.youngsmod;
+  const binertia = route.params?.beaminertia;
+  const bdima = route.params?.beamdima;
+  const bdimb = route.params?.beamdimb;
 
-const Scenario1 = () => {
-  // State variables for user input.
-  const [deadPointLoad, setDeadPointLoad] = useState('');
-  const [livePointLoad, setLivePointLoad] = useState('');
-  const [deadLoadFactor, setDeadLoadFactor] = useState('');
-  const [liveLoadFactor, setLiveLoadFactor] = useState('');
-  const [youngsMod, setYoungsMod] = useState('');
-  const [beamInertia, setBeamInertia] = useState('');
-  const [beamSpan, setBeamSpan] = useState('');
-  // Set initial values to null.
-  const deadPointLoadRef = useRef(null);
+  // State variables for user input, set to passed in calculation data.
+  const [deadPointLoad, setDeadPointLoad] = useState(deadPL);
+  const [livePointLoad, setLivePointLoad] = useState(livePL);
+  const [deadLoadFactor, setDeadLoadFactor] = useState(dlFact);
+  const [liveLoadFactor, setLiveLoadFactor] = useState(llFact);
+  const [youngsMod, setYoungsMod] = useState(ymod);
+  const [beamInertia, setBeamInertia] = useState(binertia);
+  const [beamDimA, setBeamDimA] = useState(bdima);
+  const [beamDimB, setBeamDimB] = useState(bdimb);
+  const [calculationResult, setCalculationResult] = useState(null);
+
   const livePointLoadRef = useRef(null);
   const deadLoadFactorRef = useRef(null);
   const liveLoadFactorRef = useRef(null);
   const youngsModRef = useRef(null);
   const beamInertiaRef = useRef(null);
-  const beamSpanRef = useRef(null);
+  const beamDimARef = useRef(null);
+  const beamDimBRef = useRef(null);
   const navigation = useNavigation();
-  const [calculationResult, setCalculationResult] = useState(null);
-
 
   const calculationDetails = () => {
     Keyboard.dismiss();
@@ -66,23 +88,26 @@ const Scenario1 = () => {
     const llFactor = parseFloat(liveLoadFactor);
     const yMod = parseFloat(youngsMod);
     const bInertia = parseFloat(beamInertia);
-    const bSpan = parseFloat(beamSpan);
-  
-    if (isNaN(dpLoad) || isNaN(lpLoad) || isNaN(dlFactor) || isNaN(llFactor) || isNaN(yMod) || isNaN(bInertia) || isNaN(bSpan)) {
+    const bDimA = parseFloat(beamDimA);
+    const bDimB = parseFloat(beamDimB);
+
+    if (isNaN(dpLoad) || isNaN(lpLoad) || isNaN(dlFactor) || isNaN(llFactor) || isNaN(yMod) || isNaN(bInertia) || isNaN(bDimA) || isNaN(bDimB)) {
       setCalculationResult('Please enter valid numerical values');
       return;
     }
     // Invoke calculation functions with validated input.
-    const [deadSuppReaction, liveSuppReaction] = calculateSuppReactions(dpLoad, lpLoad);
+    const [deadSuppReactionA, liveSuppReactionA, deadSuppReactionB, liveSuppReactionB] = calculateSuppReactions(dpLoad, lpLoad, bDimA, bDimB);
     const designPointLoad = designLoad(dpLoad, lpLoad, dlFactor, llFactor);
     const designShear = calculateShear(designPointLoad);
-    const designMom = calculateBendMom(designPointLoad, bSpan);
-    const [deadDeflection, liveDeflection] = calculateDeflection(dpLoad, lpLoad, yMod, bInertia, bSpan);
-  
+    const designMom = calculateBendMom(designPointLoad, bDimA, bDimB);
+    const [deadDeflection, liveDeflection] = calculateDeflection(dpLoad, lpLoad, yMod, bInertia, bDimA, bDimB);
+
     setCalculationResult({
       designPointLoad,
-      deadSuppReaction,
-      liveSuppReaction,
+      deadSuppReactionA,
+      liveSuppReactionA,
+      deadSuppReactionB,
+      liveSuppReactionB,
       designShear,
       designMom,
       deadDeflection,
@@ -93,29 +118,32 @@ const Scenario1 = () => {
   };
   
 
-  const handleCalcButtonPress = () => {  
-    if(calculationResult) {
-      // Pass results and input parameters to results screen.
-      navigation.navigate('Scenario1Results', {
-        deadsupportreaction: calculationResult.deadSuppReaction,
-        livesupportreaction: calculationResult.liveSuppReaction,
+  const handleCalcButtonPress = () => {
+    if (calculationResult) {
+      navigation.navigate('Scenario2Results', {
+        // Pass results and input parameters to results screen.
+        deadsupportreactionA: calculationResult.deadSuppReactionA,
+        livesupportreactionA: calculationResult.liveSuppReactionA,
+        deadsupportreactionB: calculationResult.deadSuppReactionB,
+        livesupportreactionB: calculationResult.liveSuppReactionB,
         designshear: calculationResult.designShear,
         designmoment: calculationResult.designMom,
         deaddeflection: calculationResult.deadDeflection,
         livedeflection: calculationResult.liveDeflection,
-        beamspan: beamSpan,
-        deadloadfactor: deadLoadFactor,
-        liveloadfactor: liveLoadFactor,
-        deadpointload: deadPointLoad,
-        livepointload: livePointLoad,
-        beaminertia: beamInertia, 
-        youngsmod: youngsMod,
-      })
+        deadpointLoad: deadPointLoad,
+        livepointLoad: livePointLoad,
+        deadloadFactor: deadLoadFactor,
+        liveloadFactor: liveLoadFactor,
+        beamdima: beamDimA,
+        beamdimb: beamDimB,
+        beaminertia: beamInertia,
+        youngsmod: youngsMod
+      });
+    } else {
+      alert('Please calculate first before navigating to the results screen.');
     }
-    else {
-      alert('Please review your input for corectness, once satisfied press calculate again.');
-      }
-    }
+  };
+
 
   return (
     <KeyboardAvoidingView
@@ -123,11 +151,10 @@ const Scenario1 = () => {
       style={{ flex: 1 }}
     >
       <View style={styles.container}>
-        <Image source={require('/Users/billynoble/StrucAssistant/images/Scenario1.png')} style={styles.image} />
+        <Image source={require('/Users/billynoble/StrucAssistant/images/Scenario2.png')} style={styles.image} />
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Text style={styles.label}>Dead Point Load [P] (kN):</Text>
           <TextInput
-            ref={deadPointLoadRef}
             style={styles.input}
             value={deadPointLoad}
             onChangeText={setDeadPointLoad}
@@ -177,16 +204,27 @@ const Scenario1 = () => {
             blurOnSubmit={false}
           />
 
-          <Text style={styles.label}>Beam Span [L] (m):</Text>
+          <Text style={styles.label}>Dimension a (m):</Text>
           <TextInput
-            ref={beamSpanRef}
+            ref={beamDimARef}
             style={styles.input}
-            value={beamSpan}
-            onChangeText={setBeamSpan}
-            placeholder = "Beam Span (m)"
+            value={beamDimA}
+            onChangeText={setBeamDimA}
+            placeholder="Enter dimension a (m)"
             keyboardType="numeric"
             onSubmitEditing={calculationDetails}
           />
+
+          <Text style={styles.label}>Dimension b (m):</Text>
+          <TextInput
+            ref={beamDimBRef}
+            style={styles.input}
+            value={beamDimB}
+            onChangeText={setBeamDimB}
+            placeholder="Enter dimension b (m)"
+            keyboardType="numeric"
+            onSubmitEditing={calculationDetails}
+          />      
 
           <Text style={styles.label}>Youngs Modulus (N/mm^2):</Text>
           <TextInput
@@ -267,4 +305,5 @@ const styles = StyleSheet.create({
     marginBottom:10
   }
 });
-export default Scenario1;
+
+export default Scenario2Review;

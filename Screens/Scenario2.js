@@ -2,11 +2,13 @@ import React, { useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Keyboard, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+// Calculation of design point load.
 export function designLoad(deadPointLoad, livePointLoad, deadLoadFactor, liveLoadFactor) {
   const designPointLoad = (deadPointLoad * deadLoadFactor) + (livePointLoad * liveLoadFactor);
   return designPointLoad;
 }
 
+// Calculation of unfactored support reactions.
 export function calculateSuppReactions(deadPointLoad, livePointLoad, beamDimA, beamDimB) {
   const deadSuppReactionA = (deadPointLoad * beamDimB) / (beamDimA + beamDimB);
   const liveSuppReactionA = (livePointLoad * beamDimB) / (beamDimA + beamDimB);
@@ -15,11 +17,13 @@ export function calculateSuppReactions(deadPointLoad, livePointLoad, beamDimA, b
   return [deadSuppReactionA, liveSuppReactionA, deadSuppReactionB, liveSuppReactionB];
 }
 
+// Calculation of design bending moment.
 export function calculateBendMom(designPointLoad, beamDimA, beamDimB) {
   const designMom = ((designPointLoad * beamDimA * beamDimB) / (beamDimA + beamDimB))
   return designMom;
 }
 
+// Calculation of dead and live deflection.
 export function calculateDeflection(deadPointLoad, livePointLoad, youngsMod, beamInertia, beamDimA, beamDimB) {
   const dimx = Math.sqrt(((beamDimA) * ((beamDimA + beamDimB) + beamDimB)) / 3);
   const rawdeadDeflection =
@@ -35,6 +39,7 @@ export function calculateDeflection(deadPointLoad, livePointLoad, youngsMod, bea
   return [deadDeflection, liveDeflection];
 }
 
+// Calculation of design shear.
 export function calculateShear(designPointLoad) {
   const designShear = designPointLoad / 2;
   return designShear;
@@ -42,6 +47,7 @@ export function calculateShear(designPointLoad) {
 
 
 const Scenario2 = () => {
+  // State variables for user input.
   const [deadPointLoad, setDeadPointLoad] = useState('');
   const [livePointLoad, setLivePointLoad] = useState('');
   const [deadLoadFactor, setDeadLoadFactor] = useState('');
@@ -51,7 +57,7 @@ const Scenario2 = () => {
   const [beamDimA, setBeamDimA] = useState('');
   const [beamDimB, setBeamDimB] = useState('');
   const [calculationResult, setCalculationResult] = useState(null);
-
+  // Set initial values to null.
   const livePointLoadRef = useRef(null);
   const deadLoadFactorRef = useRef(null);
   const liveLoadFactorRef = useRef(null);
@@ -63,7 +69,7 @@ const Scenario2 = () => {
 
   const calculationDetails = () => {
     Keyboard.dismiss();
-
+    // Parsing of inputs to ensure float.
     const dpLoad = parseFloat(deadPointLoad);
     const lpLoad = parseFloat(livePointLoad);
     const dlFactor = parseFloat(deadLoadFactor);
@@ -78,6 +84,7 @@ const Scenario2 = () => {
       return;
     }
 
+    // Invoke calculation functions with validated input.
     const [deadSuppReactionA, liveSuppReactionA, deadSuppReactionB, liveSuppReactionB] = calculateSuppReactions(dpLoad, lpLoad, bDimA, bDimB);
     const designPointLoad = designLoad(dpLoad, lpLoad, dlFactor, llFactor);
     const designShear = calculateShear(designPointLoad);
@@ -102,6 +109,7 @@ const Scenario2 = () => {
 
   const handleCalcButtonPress = () => {
     if (calculationResult) {
+      // Pass results and input parameters to results screen.
       navigation.navigate('Scenario2Results', {
         deadsupportreactionA: calculationResult.deadSuppReactionA,
         livesupportreactionA: calculationResult.liveSuppReactionA,
@@ -111,10 +119,10 @@ const Scenario2 = () => {
         designmoment: calculationResult.designMom,
         deaddeflection: calculationResult.deadDeflection,
         livedeflection: calculationResult.liveDeflection,
-        deadpointLoad: deadPointLoad,
-        livepointLoad: livePointLoad,
-        deadloadFactor: deadLoadFactor,
-        liveloadFactor: liveLoadFactor,
+        deadpointload: deadPointLoad,
+        livepointload: livePointLoad,
+        deadloadfactor: deadLoadFactor,
+        liveloadfactor: liveLoadFactor,
         beamdima: beamDimA,
         beamdimb: beamDimB,
         beaminertia: beamInertia,

@@ -1,56 +1,70 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import { useRoute } from '@react-navigation/native';
 
-const Scenario1Graphical = () => {
+const Scenario2Graphical = () => {
   const route = useRoute();
   // Extracting data from the route params.
-  const deadSuppReaction = route.params?.deadsupportreaction;
-  const liveSuppReaction = route.params?.livesupportreaction;
+  const deadSuppReactionA = route.params?.deadsupportreactiona;
+  const liveSuppReactionA = route.params?.livesupportreactiona;
+  const deadSuppReactionB = route.params?.deadsupportreactionb;
+  const liveSuppReactionB = route.params?.livesupportreactionb;
   const designShear = route.params?.designshear;
   const designMom = route.params?.designmoment;
   const deadDeflection = route.params?.deaddeflection;
   const liveDeflection = route.params?.livedeflection;
-  const beamSpan = route.params?.beamspan;
+  const deadPointLoad = route.params?.deadPointLoad;
+  const livePointLoad = route.params?.livePointLoad;
   const deadLoadFactor = route.params?.deadLoadFactor;
   const liveLoadFactor = route.params?.liveLoadFactor;
-  const livePointLoad = route.params?.livePointLoad;
-  const deadPointLoad = route.params?.deadPointLoad;
+  const beamDimA = route.params?.beamDimA;
+  const beamDimB = route.params?.beamDimB;
   const beamInertia = route.params?.beamInertia;
   const youngsMod = route.params?.youngsMod;
 
 
+
   return (
     <View style={styles.container}>
-      <Image source={require('/Users/billynoble/StrucAssistant/images/Diagram1.png')} style={styles.image} />
+      <Image source={require('/Users/billynoble/StrucAssistant/images/Diagram2.png')} style={styles.image} />
       <View style={styles.row}>
-        <Text style={[styles.label, { flex: 0.7 }]}>Dead Support Reaction:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{deadSuppReaction} kN</Text>
+        <Text style={[styles.label, { flex: 0.8 }]}>Dead Support Reaction @ A:</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{deadSuppReactionA} kN</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={[styles.label, { flex: 0.7 }]}>Live Support Reaction:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{liveSuppReaction} kN</Text>
+        <Text style={[styles.label, { flex: 0.8 }]}>Live Support Reaction @ A:</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{liveSuppReactionA} kN</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={[styles.label, { flex: 0.7 }]}>Design Shear:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{designShear} kN</Text>
+        <Text style={[styles.label, { flex: 0.8 }]}>Dead Support Reaction @ B:</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{deadSuppReactionB} kN</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={[styles.label, { flex: 0.7 }]}>Design Moment:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{designMom} kNm</Text>
+        <Text style={[styles.label, { flex: 0.8 }]}>Live Support Reaction @ B:</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{liveSuppReactionB} kN</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Text style={[styles.label, { flex: 0.8}]}>Design Shear:</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{designShear} kN</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Text style={[styles.label, { flex: 0.6 }]}>Design Moment:</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{designMom} kNm</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Dead Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{deadDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{deadDeflection} mm</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Live Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{liveDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{liveDeflection} mm</Text>
       </View>
     </View>
   )
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginTop: 20,
-    width: '48%', 
+    width: '48%',
     alignItems: 'center',
   },
   buttonText: {
@@ -111,7 +125,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    marginTop: 20,
+    marginTop: 20, 
     paddingHorizontal: 16,
     paddingBottom: 20,
   },
@@ -127,4 +141,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Scenario1Graphical
+export default Scenario2Graphical

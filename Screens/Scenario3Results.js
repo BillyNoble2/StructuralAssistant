@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Scenario3Results = ({ navigation }) => {
   const route = useRoute();
+  // Extracting data from the route params.
   const deadSuppReaction = route.params?.deadsupportreaction;
   const liveSuppReaction = route.params?.livesupportreaction;
   const designShear = route.params?.designshear;
@@ -23,6 +24,24 @@ const Scenario3Results = ({ navigation }) => {
   const handleHelpPress = () =>{
     navigation.navigate('FAQ')
   }
+
+  const handleButtonPress = () =>{
+    navigation.navigate('Scenario3Graphical', {
+      deadsupportreaction: deadSuppReaction,
+      livesupportreaction: liveSuppReaction,
+      designshear: designShear,
+      designmoment: designMom,
+      deaddeflection: deadDeflection,
+      livedeflection: liveDeflection,
+      beamspan: beamSpan,
+      deadlineload: deadLineLoad,
+      livelineload: liveLineLoad,
+      deadloadfactor: deadLoadFactor,
+      liveloadfactor: liveLoadFactor, 
+      beaminertia: beamInertia,
+      youngsmod: youngsMod,
+      Scenario: 3
+    })};
 
   const handleSaveCalculation = () =>{
     //Navigate to next screen to input calculation information.
@@ -70,17 +89,17 @@ const Scenario3Results = ({ navigation }) => {
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Dead Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{deadDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{deadDeflection} mm</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Live Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{liveDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{liveDeflection} mm</Text>
       </View>
 
       
       <View style={styles.fixedButtonContainer}>
-        <TouchableOpacity style={styles.button} onPress={()=>{}}>
+        <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
           <Text style={styles.buttonText}>View Graphical Results</Text>
         </TouchableOpacity>
 

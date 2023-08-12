@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { auth } from '../firebase';
 
-
+// Component for displaying a welcome message.
 const WelcomeMessage = () => {
   return(
     <View style = {styles.welcome}>
@@ -12,6 +12,7 @@ const WelcomeMessage = () => {
   )
 }
 
+// Component for displaying the header.
 const Header = () => {
   return (
     <View style={styles.headerContainer}>
@@ -22,53 +23,46 @@ const Header = () => {
 
 const MainMenu = () => {
 
+  // Sign out the user and navigate to the Login screen.
   const handleSignOut = () =>{
     auth.signOut().then(()=>{
         navigation.replace("Login")
     })
+    // Show an alert if sign out fails.
     .catch(error => alert(error.message))
   }
-
+  // Initialize useNavigation hook.
   const navigation = useNavigation();
 
-  const handleButton1Press = () => {
+  const handleNewCalcPress = () => {
     navigation.navigate('NewCalc');
   };
 
-  const handleButton2Press = () => {
+  const handleExistCalcPress = () => {
     navigation.navigate('ExistingCalc');
   };
 
-  const handleButton3Press = () => {
+  const handleFAQPress = () => {
     navigation.navigate('FAQ');
   };  
-  
-  const handleButton4Press = () => {
-    navigation.navigate('MyAccount');
-  };
 
   return (
     <View style={styles.container}>
       <Header />
       <WelcomeMessage />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleButton1Press}>
+        <TouchableOpacity style={styles.button} onPress={handleNewCalcPress}>
           <Text style={styles.buttonText}>Start a new calculation</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleButton2Press}>
+        <TouchableOpacity style={styles.button} onPress={handleExistCalcPress}>
           <Text style={styles.buttonText}>View Existing Calculations</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleButton3Press}>
+        <TouchableOpacity style={styles.button} onPress={handleFAQPress}>
           <Text style={styles.buttonText}>FAQ's</Text>
         </TouchableOpacity>
-        <View style={styles.additionalButtonsContainer}>
-          <TouchableOpacity style={styles.additionalButton} onPress = {handleButton4Press}>
-            <Text style={styles.buttonText}>My Account</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.additionalButton} onPress = {handleSignOut}>
             <Text style={styles.buttonText}>Log Out</Text>
           </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -118,8 +112,8 @@ const styles = StyleSheet.create({
   additionalButton: {
     backgroundColor: 'darkblue',
     borderRadius: 30,
-    padding: 5,
-    width: 160,
+    padding: 10,
+    width: 350,
     alignItems: 'center',
   },
   welcome:{

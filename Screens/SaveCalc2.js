@@ -2,35 +2,33 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-nativ
 import React from 'react'
 import { useRoute } from '@react-navigation/native';
 import { auth, db } from '../firebase'
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 
 const SaveCalc2 = () => {
     const route = useRoute();
-    const deadSuppReaction = route.params?.deadsupportreaction;
-    const liveSuppReaction = route.params?.livesupportreaction;
-    const designShear = route.params?.designshear;
-    const designMom = route.params?.designmoment;
-    const deadDeflection = route.params?.deaddeflection;
-    const liveDeflection = route.params?.livedeflection;
+    // Extracting data from the route params.
+    const deadSuppReactionA = route.params?.deadsupportreactiona;
+    const deadSuppReactionB = route.params?.deadsupportreactionb;
+    const liveSuppReactionA = route.params?.livesupportreactiona;
+    const liveSuppReactionB = route.params?.livesupportreactionb;
     const beamDimA = route.params?.beamdima;
     const beamDimB = route.params?.beamdimb;
     const deadLoadFactor = route.params?.deadloadfactor;
-    const liveLoadFactor = route.params?.liveLoadFactor;
-    const deadPointLoad = route.params?.deadPointLoad;
-    const livePointLoad = route.params?.livePointLoad;
-    const beamInertia = route.params?.beamInertia;
-    const youngsMod = route.params?.youngsMod;
-
+    const liveLoadFactor = route.params?.liveloadfactor;
+    const deadPointLoad = route.params?.deadpointload;
+    const livePointLoad = route.params?.livepointload;
+    const beamInertia = route.params?.beaminertia;
+    const youngsMod = route.params?.youngsmod;
+    // State variables for user input
     const [calcRef, setCalcRef] = useState('');
     const [calcTitle, setCalcTitle] = useState('');
     const [contractNo, setContractNo] = useState('');
     const [contractName, setContractName] = useState('');
     const [notes, setNotes] = useState('');
-
     const navigation = useNavigation();
 
-
-
+    // Function to handle saving the calculation data to the database
     const handleSaveCalculation = () => {
         const calculationData = {
             calcRef: calcRef,
@@ -38,24 +36,26 @@ const SaveCalc2 = () => {
             contractNo: contractNo,
             contractName: contractName,
             notes: notes,
-            deadSuppReaction: deadSuppReaction,
-            liveSuppReaction: liveSuppReaction,
+            deadSuppReactionA: deadSuppReactionA,
+            liveSuppReactionA: liveSuppReactionA,
+            liveSuppReactionB: liveSuppReactionB,
+            deadSuppReactionB: deadSuppReactionB,
             deadLoadFactor: deadLoadFactor,
-            beamspan: beamSpan,
+            beamdima: beamDimA,
+            beamdimb: beamDimB,
             userId: auth.currentUser.uid,
-            deadLoadFactor: deadLoadFactor,
             liveLoadFactor: liveLoadFactor,
             deadPointLoad: deadPointLoad,
             livePointLoad: livePointLoad,
             beamInertia: beamInertia,
             youngsMod: youngsMod,
-            Scenario: 2
+            scenario: 2
         };
+        // Adding calculation data to the "Calculations" collection in the database
         db.collection("Calculations")
         .add(calculationData)
-
         alert("Your calculation has been saved.")
-
+        // Navigate back to the main menu after saving
         navigation.navigate('MainMenu')
     };
 
@@ -68,7 +68,6 @@ const SaveCalc2 = () => {
                 value={calcRef}
                 onChangeText={setCalcRef}
                 placeholder="Calculation Reference"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -79,7 +78,6 @@ const SaveCalc2 = () => {
                 value={calcTitle}
                 onChangeText={setCalcTitle}
                 placeholder="Calculation Title"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -90,7 +88,6 @@ const SaveCalc2 = () => {
                 value={contractNo}
                 onChangeText={setContractNo}
                 placeholder="Contract Number"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -101,7 +98,6 @@ const SaveCalc2 = () => {
                 value={contractName}
                 onChangeText={setContractName}
                 placeholder="Contract Name"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -112,7 +108,6 @@ const SaveCalc2 = () => {
                 value={notes}
                 onChangeText={setNotes}
                 placeholder=""
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />

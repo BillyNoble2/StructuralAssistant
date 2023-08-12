@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import React from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
 
 
-const Scenario1Results = ({ navigation }) => {
+const Scenario2Results = ({ navigation }) => {
   const route = useRoute();
+  // Extracting data from the route params.
   const deadSuppReactionA = route.params?.deadsupportreactionA;
   const liveSuppReactionA = route.params?.livesupportreactionA;
   const deadSuppReactionB = route.params?.deadsupportreactionB;
@@ -14,14 +14,39 @@ const Scenario1Results = ({ navigation }) => {
   const designMom = route.params?.designmoment;
   const deadDeflection = route.params?.deaddeflection;
   const liveDeflection = route.params?.livedeflection;
-  const deadPointLoad = route.params?.deadPointLoad;
-  const livePointLoad = route.params?.livePointLoad;
-  const deadLoadFactor = route.params?.deadLoadFactor;
-  const liveLoadFactor = route.params?.liveLoadFactor;
-  const beamDimA = route.params?.beamDimA;
-  const beamDimB = route.params?.beamDimB;
-  const beamInertia = route.params?.beamInertia;
-  const youngsMod = route.params?.youngsMod;
+  const deadPointLoad = route.params?.deadpointload;
+  const livePointLoad = route.params?.livepointload;
+  const deadLoadFactor = route.params?.deadloadfactor;
+  const liveLoadFactor = route.params?.liveloadfactor;
+  const beamDimA = route.params?.beamdima;
+  const beamDimB = route.params?.beamdimb;
+  const beamInertia = route.params?.beaminertia;
+  const youngsMod = route.params?.youngsmod;
+
+
+  const handleGraphicalPress = () => {
+    console.log(deadLoadFactor)
+    navigation.navigate('Scenario2Graphical',{
+      deadsupportreactiona: deadSuppReactionA,
+      livesupportreactiona: liveSuppReactionA,
+      deadsupportreactionb: deadSuppReactionB,
+      livesupportreactionb: liveSuppReactionB,
+      designshear: designShear,
+      designmoment: designMom,
+      deaddeflection: deadDeflection,
+      livedeflection: liveDeflection,
+      beamdima: beamDimA,
+      beamdimb: beamDimB,
+      deadpointload: deadPointLoad,
+      livepointload: livePointLoad,
+      deadloadfactor: deadLoadFactor,
+      liveloadfactor: liveLoadFactor, 
+      beaminertia: beamInertia,
+      youngsmod: youngsMod,
+      Scenario: 2
+  
+    });
+  };
 
   const handleHelpPress = () =>{
     navigation.navigate('FAQ')
@@ -30,8 +55,10 @@ const Scenario1Results = ({ navigation }) => {
   const handleSaveCalculation = () =>{
     //Navigate to next screen to input calculation information.
       navigation.navigate('SaveCalc2', {
-      deadsupportreaction: deadSuppReaction,
-      livesupportreaction: liveSuppReaction,
+      deadsupportreactiona: deadSuppReactionA,
+      livesupportreactiona: liveSuppReactionA,
+      deadsupportreactionb: deadSuppReactionB,
+      livesupportreactionb: liveSuppReactionB,
       designshear: designShear,
       designmoment: designMom,
       deaddeflection: deadDeflection,
@@ -82,16 +109,16 @@ const Scenario1Results = ({ navigation }) => {
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Dead Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{deadDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{deadDeflection} mm</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Live Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{liveDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{liveDeflection} mm</Text>
       </View>
       
       <View style={styles.fixedButtonContainer}>
-        <TouchableOpacity style={styles.button} onPress={()=>{}}>
+        <TouchableOpacity style={styles.button} onPress={handleGraphicalPress}>
           <Text style={styles.buttonText}>View Graphical Results</Text>
         </TouchableOpacity>
 
@@ -178,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Scenario1Results;
+export default Scenario2Results;

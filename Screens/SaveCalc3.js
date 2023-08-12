@@ -3,15 +3,13 @@ import React from 'react'
 import { useRoute } from '@react-navigation/native';
 import { auth, db } from '../firebase'
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const SaveCalc3 = () => {
     const route = useRoute();
+    // Extracting data from the route params
     const deadSuppReaction = route.params?.deadsupportreaction;
     const liveSuppReaction = route.params?.livesupportreaction;
-    const designShear = route.params?.designshear;
-    const designMom = route.params?.designmoment;
-    const deadDeflection = route.params?.deaddeflection;
-    const liveDeflection = route.params?.livedeflection;
     const beamSpan = route.params?.beamspan;
     const deadLoadFactor = route.params?.deadloadfactor;
     const liveLoadFactor = route.params?.liveloadfactor;
@@ -19,17 +17,15 @@ const SaveCalc3 = () => {
     const liveLineLoad = route.params?.livelineload;
     const beamInertia = route.params?.beaminertia;
     const youngsMod = route.params?.youngsmod;
-
+    // State variables for user input
     const [calcRef, setCalcRef] = useState('');
     const [calcTitle, setCalcTitle] = useState('');
     const [contractNo, setContractNo] = useState('');
     const [contractName, setContractName] = useState('');
     const [notes, setNotes] = useState('');
-
-
     const navigation = useNavigation();
 
-
+    // Function to handle saving the calculation data to the database
     const handleSaveCalculation = () => {
         const calculationData = {
             calcRef: calcRef,
@@ -48,17 +44,16 @@ const SaveCalc3 = () => {
             liveLineLoad: liveLineLoad,
             beamInertia: beamInertia,
             youngsMod: youngsMod,
-            Scenario: 2
+            scenario: 3
         };
+        // Adding calculation data to the "Calculations" collection in the database
         db.collection("Calculations")
         .add(calculationData)
-
         alert("Your calculation has been saved.")
-
+        // Navigate back to the main menu after saving
         navigation.navigate('MainMenu')
     };
-
-
+    
     return(
         <View style = {styles.container}>
             <Text style={styles.label}>Calculation Reference:</Text>
@@ -67,7 +62,6 @@ const SaveCalc3 = () => {
                 value={calcRef}
                 onChangeText={setCalcRef}
                 placeholder="Calculation Reference"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -78,7 +72,6 @@ const SaveCalc3 = () => {
                 value={calcTitle}
                 onChangeText={setCalcTitle}
                 placeholder="Calculation Title"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -89,7 +82,6 @@ const SaveCalc3 = () => {
                 value={contractNo}
                 onChangeText={setContractNo}
                 placeholder="Contract Number"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -100,7 +92,6 @@ const SaveCalc3 = () => {
                 value={contractName}
                 onChangeText={setContractName}
                 placeholder="Contract Name"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -111,7 +102,6 @@ const SaveCalc3 = () => {
                 value={notes}
                 onChangeText={setNotes}
                 placeholder=""
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />

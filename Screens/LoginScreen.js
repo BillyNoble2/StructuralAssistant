@@ -6,26 +6,30 @@ import { useNavigation } from '@react-navigation/native'
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    // Initialize useNavigation hook.
     const navigation = useNavigation()
 
+    // Check if the user is already logged in, if yes, redirect to MainMenu.
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user =>{
             if (user) {
                 navigation.replace("MainMenu");
             }
         })
+        // Cleanup the listener on unmount.
         return unsubscribe
     }, [])
 
     const handleSignUpNav = () => {
-        navigation.replace("Register")
+        navigation.navigate("Register")
     }
 
+    // Attempt to log in using the provided email and password.
     const handleLogin = () =>{
         auth.signInWithEmailAndPassword(email, password)
         .then(userCredentials =>{
             const user = userCredentials.user; })
+        // Show an alert if login fails.
         .catch(error => alert(error.message))
     }
 

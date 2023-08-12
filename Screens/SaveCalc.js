@@ -7,12 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const SaveCalc = () => {
     const route = useRoute();
+    // Extracting data from the route params.
     const deadSuppReaction = route.params?.deadsupportreaction;
     const liveSuppReaction = route.params?.livesupportreaction;
-    const designShear = route.params?.designshear;
-    const designMom = route.params?.designmoment;
-    const deadDeflection = route.params?.deaddeflection;
-    const liveDeflection = route.params?.livedeflection;
     const beamSpan = route.params?.beamspan;
     const deadLoadFactor = route.params?.deadloadfactor;
     const liveLoadFactor = route.params?.liveLoadFactor;
@@ -20,17 +17,15 @@ const SaveCalc = () => {
     const livePointLoad = route.params?.livePointLoad;
     const beamInertia = route.params?.beamInertia;
     const youngsMod = route.params?.youngsMod;
-
+    // State variables for user input.
     const [calcRef, setCalcRef] = useState('');
     const [calcTitle, setCalcTitle] = useState('');
     const [contractNo, setContractNo] = useState('');
     const [contractName, setContractName] = useState('');
     const [notes, setNotes] = useState('');
-
-
     const navigation = useNavigation();
 
-
+    // Function to handle saving the calculation data to the database.
     const handleSaveCalculation = () => {
         const calculationData = {
             calcRef: calcRef,
@@ -49,16 +44,16 @@ const SaveCalc = () => {
             livePointLoad: livePointLoad,
             beamInertia: beamInertia,
             youngsMod: youngsMod,
-            Scenario: 1
+            scenario: 1
         };
-        
+        // Adding calculation data to the "Calculations" collection in the database.
         db.collection("Calculations")
         .add(calculationData)
-
         alert("Your calculation has been saved.")
-
+        // Navigate back to the main menu after saving
         navigation.navigate('MainMenu')
     };
+
     return(
         <View style = {styles.container}>
             <Text style={styles.label}>Calculation Reference:</Text>
@@ -67,7 +62,6 @@ const SaveCalc = () => {
                 value={calcRef}
                 onChangeText={setCalcRef}
                 placeholder="Calculation Reference"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -78,7 +72,6 @@ const SaveCalc = () => {
                 value={calcTitle}
                 onChangeText={setCalcTitle}
                 placeholder="Calculation Title"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -89,7 +82,6 @@ const SaveCalc = () => {
                 value={contractNo}
                 onChangeText={setContractNo}
                 placeholder="Contract Number"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -100,7 +92,6 @@ const SaveCalc = () => {
                 value={contractName}
                 onChangeText={setContractName}
                 placeholder="Contract Name"
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
@@ -111,14 +102,9 @@ const SaveCalc = () => {
                 value={notes}
                 onChangeText={setNotes}
                 placeholder=""
-                keyboardType="String"
                 returnKeyType="next"
                 blurOnSubmit={false}
             />
-
-
-
-
 
             <TouchableOpacity style={styles.button} onPress = {handleSaveCalculation}>
                 <Text style={styles.buttonText}>Save Calculation</Text>

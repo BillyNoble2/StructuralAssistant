@@ -2,7 +2,7 @@ import { designLoad, calculateSuppReactions, calculateBendMom, calculateDeflecti
 
 describe('designLoad function', () => {
     // Test case 1
-    test('calculates design load correctly', () => {
+    test('Test that design load is calculated correctly.', () => {
       const result = designLoad(10, 20, 1.5, 2);
       expect(result).toBe(55);
     });
@@ -14,7 +14,7 @@ describe('designLoad function', () => {
 
 describe('calculateSuppReactions function', () => {
     // Test case 1
-    test('calculates dead and live support reactions correctly', () => {
+    test('Test that dead and live support reactions are calculated correctly.', () => {
       const [deadSuppReactionA, liveSuppReactionA, deadSuppReactionB, liveSuppReactionB] = calculateSuppReactions(10, 10, 6, 5);
       expect(deadSuppReactionA).toBeCloseTo(4.54, 1);
       expect(liveSuppReactionA).toBeCloseTo(4.54, 1);
@@ -25,7 +25,7 @@ describe('calculateSuppReactions function', () => {
 
 describe('bending moment function', () => {
     // Test case 1
-    test('calculates design bending moment correctly', () => {
+    test('Test that design bending moment is calculated correctly.', () => {
       const result = calculateBendMom(10, 3, 5);
       expect(result).toBe(18.75);
     });
@@ -33,7 +33,7 @@ describe('bending moment function', () => {
 
 describe('deflection function', () => {
     // Test case 1
-    test('calculates dead and live deflections correctly', () => {
+    test('Test that dead and live deflctions are calculated correctly', () => {
       const [deadDeflection, liveDeflection] = calculateDeflection(3,5,205,405,4,6);
       expect(deadDeflection).toBeCloseTo(71.2, 1);
       expect(liveDeflection).toBeCloseTo(118.7, 1);
@@ -42,7 +42,7 @@ describe('deflection function', () => {
 
 describe('shear  function', () => {
     // Test case 1
-    test('calculates design shear force correctly', () => {
+    test('Test that design shear is calculated correctly', () => {
       const result = calculateShear(20);
       expect(result).toBe(10);
     });

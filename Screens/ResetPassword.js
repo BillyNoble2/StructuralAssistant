@@ -5,11 +5,12 @@ import { useState } from 'react'
 import { auth } from '../firebase'
 
 function ResetPassword() {
+    // State variable for the user's email.
     const [email, setEmail] = useState('')
-
+    // Initialize useNavigation hook.
     const navigation = useNavigation()
 
-
+    // Function to handle sending a password reset email.
     const handleForgottenPassword = () => {
         auth.sendPasswordResetEmail(email)
         .then(alert('Please check your email for password reset instructions'))

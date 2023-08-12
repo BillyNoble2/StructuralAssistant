@@ -1,10 +1,8 @@
-import React, { useState, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native'
+import React from 'react'
 import { useRoute } from '@react-navigation/native';
 
-
-
-const Scenario1Results = ({ navigation }) => {
+const Scenario3Graphical = () => {
   const route = useRoute();
   // Extracting data from the route params.
   const deadSuppReaction = route.params?.deadsupportreaction;
@@ -13,60 +11,19 @@ const Scenario1Results = ({ navigation }) => {
   const designMom = route.params?.designmoment;
   const deadDeflection = route.params?.deaddeflection;
   const liveDeflection = route.params?.livedeflection;
+  const deadLineLoad = route.params?.deadlineload;
+  const liveLineLoad = route.params?.livelineload;
+  const deadLoadFactor = route.params?.deadloadfactor;
+  const liveLoadFactor = route.params?.liveloadfactor;
   const beamSpan = route.params?.beamspan;
-  const deadLoadFactor = route.params?.deadLoadFactor;
-  const liveLoadFactor = route.params?.liveLoadFactor;
-  const livePointLoad = route.params?.livePointLoad;
-  const deadPointLoad = route.params?.deadPointLoad;
-  const beamInertia = route.params?.beamInertia;
-  const youngsMod = route.params?.youngsMod;
+  const beamInertia = route.params?.beaminertia;
+  const youngsMod = route.params?.youngsmod;
 
 
-  const handleGraphicalPress = () => {
-    navigation.navigate('Scenario1Graphical',{
-      deadsupportreaction: deadSuppReaction,
-      livesupportreaction: liveSuppReaction,
-      designshear: designShear,
-      designmoment: designMom,
-      deaddeflection: deadDeflection,
-      livedeflection: liveDeflection,
-      beamspan: beamSpan,
-      deadloadfactor: deadLoadFactor,
-      liveLoadFactor: liveLoadFactor,
-      deadPointLoad: deadPointLoad,
-      livePointLoad: livePointLoad,
-      beamInertia: beamInertia,
-      youngsMod: youngsMod,
-      Scenario: 1
-    });
-  };
 
-  const handleHelpPress = () =>{
-    navigation.navigate('FAQ')
-  }
-
-  const handleSaveCalculation = () =>{
-    //Navigate to next screen to input calculation save information.
-      navigation.navigate('SaveCalc', {
-      deadsupportreaction: deadSuppReaction,
-      livesupportreaction: liveSuppReaction,
-      designshear: designShear,
-      designmoment: designMom,
-      deaddeflection: deadDeflection,
-      livedeflection: liveDeflection,
-      beamspan: beamSpan,
-      deadloadfactor: deadLoadFactor,
-      liveLoadFactor: liveLoadFactor,
-      deadPointLoad: deadPointLoad,
-      livePointLoad: livePointLoad,
-      beamInertia: beamInertia,
-      youngsMod: youngsMod,
-      Scenario: 1
-  })};
-  
   return (
     <View style={styles.container}>
-      <Image source={require('/Users/billynoble/StrucAssistant/images/Scenario1.png')} style={styles.image} />
+      <Image source={require('/Users/billynoble/StrucAssistant/images/Diagram3.png')} style={styles.image} />
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Dead Support Reaction:</Text>
         <Text style={[styles.resultText, { flex: 0.3 }]}>{deadSuppReaction} kN</Text>
@@ -89,31 +46,17 @@ const Scenario1Results = ({ navigation }) => {
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Dead Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{deadDeflection} mm</Text>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{deadDeflection} mm</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={[styles.label, { flex: 0.7 }]}>Live Deflection:</Text>
-        <Text style={[styles.resultText, { flex: 0.3 }]}>{liveDeflection} mm</Text>
-      </View>
-      
-      <View style={styles.fixedButtonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleGraphicalPress}>
-          <Text style={styles.buttonText}>View Graphical Results</Text>
-        </TouchableOpacity>
-
-        <View style={styles.helpButtonContainer}>
-          <TouchableOpacity style={[styles.buttonHalf, { marginRight: 8 }]} onPress = {handleHelpPress}>
-            <Text style={styles.buttonText}>Help</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonHalf} onPress = {handleSaveCalculation}>
-            <Text style={styles.buttonText}>Save Calculation</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={[styles.resultText, { flex: 0.4 }]}>{liveDeflection} mm</Text>
       </View>
     </View>
-  );
-};
+  )
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -160,7 +103,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 340,
-    height: 175,
+    height: 250,
     marginBottom: 10,
     marginTop: 50,
   },
@@ -183,6 +126,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 100,
   }
-});
+})
 
-export default Scenario1Results;
+export default Scenario3Graphical
