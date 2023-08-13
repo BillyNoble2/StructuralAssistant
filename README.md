@@ -10,7 +10,7 @@ Structural Assistant is a mobile app for simplifying structural analysis calcula
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/yourusername/structural-assistant.git`
+1. Clone the repository: `git clone https://github.com/BillyNoble2/StructuralAssistant.git`
 2. Navigate to the project directory: `cd structural-assistant`
 3. Install dependencies: `npm install`
 
@@ -19,12 +19,4 @@ Structural Assistant is a mobile app for simplifying structural analysis calcula
 1. Start the app: `npm start`
 2. Open the app on your mobile device using the Expo app or in an emulator.
 
-## Contributing
 
-Contributions are welcome! If you find a bug or want to add a new feature, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature-name`
-3. Make your changes and commit them: `git commit -m 'Add new feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request.
